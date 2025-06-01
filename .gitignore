@@ -1,0 +1,5 @@
+# .gitignore content
+node_modules/
+dist/
+world.json
+.DS_Store
