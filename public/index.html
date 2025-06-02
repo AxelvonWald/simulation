@@ -3,13 +3,14 @@
 <head>
     <title>Tribal Sim World Viewer</title>
     <style>
-        body { font-family: sans-serif; max-width: 1000px; margin: 0 auto; }
-        .container { display: flex; gap: 20px; }
-        .world-map { display: grid; gap: 0; margin-bottom: 20px; }
+        body { font-family: sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .container { display: flex; gap: 30px; margin-top: 20px; }
+        .world-map { display: grid; gap: 0; }
         .tile { 
             width: 20px; height: 20px; 
             text-align: center; font-weight: bold;
             border: 1px solid rgba(0,0,0,0.1);
+            font-size: 14px;
         }
         .ocean { background-color: #1a7bb9; color: white; }
         .grassland { background-color: #7cba6a; }
@@ -20,12 +21,12 @@
             background: #f5f5f5; 
             padding: 15px;
             border-radius: 5px;
-            height: fit-content;
+            min-width: 200px;
         }
         .legend-item { 
             display: flex; 
             align-items: center;
-            margin: 5px 0;
+            margin: 8px 0;
         }
         .legend-color { 
             width: 20px; 
@@ -33,19 +34,16 @@
             margin-right: 10px;
             border: 1px solid #ccc;
         }
+        h1 { color: #2a5a1c; }
     </style>
 </head>
 <body>
     <h1>World Map (30×30)</h1>
     <div class="container">
-        <div>
-            <div id="world-container" class="world-map"></div>
-        </div>
+        <div id="world-container" class="world-map"></div>
         <div class="legend">
             <h3>Biome Key</h3>
             <div id="legend-items"></div>
-            <h3>Elevation</h3>
-            <p>Hover over tiles to see elevation values</p>
         </div>
     </div>
     <script src="app.js"></script>

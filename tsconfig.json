@@ -1,15 +1,32 @@
 {
   "compilerOptions": {
+    /* Basic Options */
     "target": "ES2020",
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "lib": ["ES2020", "DOM"],
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    /* Path Resolution */
+    "baseUrl": "./src",
+    "paths": {
+      "@simulation/*": ["simulation/*"],
+      "@server/*": ["server/*"]
+    },
+
+    /* Additional Checks */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+
+    /* Module Resolution */
+    "moduleResolution": "Node",
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "server.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "public"]
 }
