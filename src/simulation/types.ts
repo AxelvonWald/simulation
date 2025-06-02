@@ -7,4 +7,5 @@ export type World = {
   elevation: number[][];
   biomes: Biome[][];
   rivers: River[];
+  flooded?: boolean[][];
 };

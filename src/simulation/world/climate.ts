@@ -8,29 +8,24 @@ export function assignBiomes(elevation: number[][]): Biome[][] {
     for (let y = 0; y < elevation[x].length; y++) {
       const h = elevation[x][y];
       
-      // More natural thresholds with blending
+      // Ocean with gradual coastline
       if (h < 0.4) {
-        // Ocean with rare coastal exceptions
-        biomes[x][y] = (h > 0.38 && Math.random() > 0.8) ? 'grassland' : 'ocean';
+        biomes[x][y] = Math.random() < (h/0.4)*0.8 ? 'grassland' : 'ocean';
       } 
-      else if (h < 0.5) {
-        // Coastline blend
-        biomes[x][y] = Math.random() > h * 1.5 ? 'grassland' : 'ocean';
-      }
+      // Grassland with forest patches
       else if (h < 0.65) {
-        // Grassland with occasional forests
-        biomes[x][y] = Math.random() > 0.7 ? 'forest' : 'grassland';
+        biomes[x][y] = Math.random() > 0.7 - (h-0.4)*0.02 ? 'forest' : 'grassland';
       }
+      // Mountain transitions
       else if (h < 0.8) {
-        // Forests with mountain transitions
-        const forestChance = 1 - (h - 0.65) / 0.15;
-        biomes[x][y] = Math.random() < forestChance ? 'forest' : 'tundra';
+        biomes[x][y] = Math.random() > (h-0.65)/0.15 ? 'forest' : 'tundra';
       }
+      // High mountains
       else {
-        // Mountains
         biomes[x][y] = 'tundra';
       }
     }
   }
+  
   return biomes;
 }

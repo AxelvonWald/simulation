@@ -6,15 +6,45 @@ const BIOMES = {
   desert: { symbol: '≋', color: '#e3c688', name: 'Desert' }
 };
 
-function isRiverTile(x, y, world) {
-  return world.rivers.some(river => 
-    river.path.some(p => p.x === x && p.y === y)
-  );
+function createLegend() {
+  const container = document.getElementById('legend-items');
+  
+  // Biome legend items
+  Object.values(BIOMES).forEach(biome => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `
+      <div class="legend-color" style="background: ${biome.color}"></div>
+      <span>${biome.symbol} ${biome.name}</span>
+    `;
+    container.appendChild(item);
+  });
+
+  // River and flood items
+  const specialItems = [
+    { symbol: '≈', color: '#1a7bb9', name: 'River', textColor: 'white' },
+    { symbol: '', color: 'rgba(26, 123, 185, 0.3)', name: 'Flooded' }
+  ];
+
+  specialItems.forEach(item => {
+    const elem = document.createElement('div');
+    elem.className = 'legend-item';
+    elem.innerHTML = `
+      <div class="legend-color" style="
+        background: ${item.color};
+        ${item.textColor ? `color: ${item.textColor};` : ''}
+      ">${item.symbol}</div>
+      <span>${item.name}</span>
+    `;
+    container.appendChild(elem);
+  });
 }
 
 fetch('/api/world')
   .then(response => response.json())
   .then(world => {
+    createLegend();
+    
     const container = document.getElementById('world-container');
     container.style.gridTemplateColumns = `repeat(${world.width}, 20px)`;
 
@@ -22,13 +52,16 @@ fetch('/api/world')
       for (let x = 0; x < world.width; x++) {
         const tile = document.createElement('div');
         const biome = world.biomes[x][y];
-        const isRiver = isRiverTile(x, y, world);
+        const isRiver = world.rivers?.some(r => r.path.some(p => p.x === x && p.y === y));
+        const isFlooded = world.flooded?.[x]?.[y];
 
         tile.className = `tile ${biome}`;
         tile.textContent = isRiver ? '≈' : BIOMES[biome].symbol;
-        tile.title = `X:${x} Y:${y} ${BIOMES[biome].name}`;
-
-        if (isRiver) {
+        
+        if (isFlooded) {
+          tile.style.backgroundColor = `color-mix(in srgb, ${BIOMES[biome].color} 60%, #1a7bb9 40%)`;
+          tile.style.opacity = '0.8';
+        } else if (isRiver) {
           tile.style.color = '#1a7bb9';
           tile.style.fontWeight = 'bold';
         }
@@ -36,25 +69,4 @@ fetch('/api/world')
         container.appendChild(tile);
       }
     }
-
-    // Create legend
-    const legend = document.getElementById('legend-items');
-    Object.values(BIOMES).forEach(biome => {
-      const item = document.createElement('div');
-      item.className = 'legend-item';
-      item.innerHTML = `
-        <div class="legend-color" style="background: ${biome.color}"></div>
-        <span>${biome.symbol} ${biome.name}</span>
-      `;
-      legend.appendChild(item);
-    });
-
-    // Add river legend item
-    const riverItem = document.createElement('div');
-    riverItem.className = 'legend-item';
-    riverItem.innerHTML = `
-      <div class="legend-color" style="background: #1a7bb9"></div>
-      <span>≈ River</span>
-    `;
-    legend.appendChild(riverItem);
   });
