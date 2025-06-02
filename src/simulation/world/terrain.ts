@@ -1,5 +1,4 @@
 import { createNoise2D } from 'simplex-noise';
-import { World } from '../types';
 
 function stringToSeed(seed: string): number {
   let hash = 0;

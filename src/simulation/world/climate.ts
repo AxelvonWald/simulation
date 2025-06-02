@@ -1,4 +1,4 @@
-import { World, Biome } from '../types';
+import { Biome } from '../types';
 
 export function assignBiomes(elevation: number[][]): Biome[][] {
   const biomes: Biome[][] = [];

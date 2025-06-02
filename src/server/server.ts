@@ -7,7 +7,7 @@ const PORT = 3000;
 
 app.use(express.static('public'));
 
-app.get('/api/world', (req, res) => {
+app.get('/api/world', (_req, res) => {
     try {
         const worldData = fs.readFileSync('world.json', 'utf-8');
         const world: World = JSON.parse(worldData);
